@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import style from "./contactForm.module.css";
-import shortid from "shortid";
 import { connect } from "react-redux";
 import phoneBookActions from "../../redux/phoneBookActions";
+import Message from "../Message/Message";
+import swal from "sweetalert";
+import { CSSTransition } from "react-transition-group";
 
 class ContactForm extends Component {
   state = {
     name: "",
     number: "",
-    contacts: [],
+    error: false,
   };
-
-  nameInputId = shortid.generate();
-  numberInputId = shortid.generate();
 
   handleChange = (event) => {
     const { name, value } = event.currentTarget;
@@ -22,7 +21,29 @@ class ContactForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
+    const { contacts } = this.props;
+    if (
+      contacts.find(
+        ({ name }) => name.toLowerCase() === this.state.name.toLowerCase()
+      )
+    ) {
+      this.setState({ error: true });
+      setTimeout(() => {
+        this.setState({ error: false });
+      }, 2500);
+
+      return;
+    }
+    if (this.state.name === "") {
+      swal("Enter concact name, please!");
+      return;
+    }
+    if (this.state.number === "") {
+      swal("Enter concact phone, please!");
+      return;
+    }
+
+    this.props.onSubmit(this.state.name, this.state.number);
     this.handleClearState();
   };
 
@@ -62,6 +83,14 @@ class ContactForm extends Component {
             Add contact
           </button>
         </form>
+        <CSSTransition
+          in={this.state.error === true}
+          timeout={250}
+          classNames={style}
+          unmountOnExit
+        >
+          <Message />
+        </CSSTransition>
       </div>
     );
   }

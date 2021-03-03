@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import types from "./phonebookTypes";
+import types from "./phoneBookTypes";
 
 const items = (state = [], { type, payload }) => {
   switch (type) {

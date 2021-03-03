@@ -2,11 +2,13 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 import style from "./filter.module.css";
 import shortid from "shortid";
+import { connect } from "react-redux";
+import actions from "../../redux/phoneBookActions";
 
-export default class Filter extends Component {
-  state = {
-    filter: "",
-  };
+class Filter extends Component {
+  // state = {
+  //   filter: "",
+  // };
 
   filterInputId = shortid.generate();
 
@@ -30,3 +32,14 @@ export default class Filter extends Component {
 Filter.propTypes = {
   filter: PropTypes.string,
 };
+
+const mapStateToProps = (state) => ({
+  value: state.contacts.filter,
+  items: state.contacts.items,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onChangeFilter: (value) => dispatch(actions.changeFilter(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
