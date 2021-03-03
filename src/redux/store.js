@@ -1,8 +1,4 @@
-import {
-  configureStore,
-  combineReducers,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import phoneBookReducer from "./phoneBookReducer";
 import {
@@ -26,21 +22,18 @@ const middleware = [
   logger,
 ];
 
-const persistConfig = {
-  key: "old",
+const contactsPersistConfig = {
+  key: "contacts",
   storage,
+  blacklist: ["filter"],
 };
-
-const rootReducer = combineReducers({
-  contacts: phoneBookReducer,
-});
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // const store = createStore(rootReducer, composeWithDevTools());
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    contacts: persistReducer(contactsPersistConfig, phoneBookReducer),
+  },
   middleware,
   devTools: process.env.NODE_ENV === "development",
 });
