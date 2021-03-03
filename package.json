@@ -13,6 +13,8 @@
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
     "shortid": "^2.2.16",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^10.15.5",
