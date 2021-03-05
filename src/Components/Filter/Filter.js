@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import style from "./filter.module.css";
 import shortid from "shortid";
 import { connect } from "react-redux";
-import actions from "../../redux/phoneBookActions";
+import * as phoneBookActions from "../../redux/phoneBookActions";
 
 class Filter extends Component {
   // state = {
@@ -39,7 +39,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeFilter: (value) => dispatch(actions.changeFilter(value)),
+  onChangeFilter: (value) => dispatch(phoneBookActions.changeFilter(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

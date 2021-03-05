@@ -1,14 +1,38 @@
 import { combineReducers } from "redux";
 // import types from "./phoneBookTypes";
 import { createReducer } from "@reduxjs/toolkit";
-import actions from "./phoneBookActions";
-// import { act } from "react-dom/test-utils";
+import {
+  fetchContactRequest,
+  fetchContactSuccess,
+  fetchContactError,
+  addContactRequest,
+  addContactSuccess,
+  addContactError,
+  removeContactRequest,
+  removeContactSuccess,
+  removeContactError,
+  changeFilter,
+} from "./phoneBookActions";
 
 const items = createReducer([], {
-  [actions.addContact]: (state, { payload }) => [...state, payload],
+  [fetchContactSuccess]: (_, { payload }) => payload,
 
-  [actions.removeContact]: (state, { payload }) =>
+  [addContactSuccess]: (state, { payload }) => [...state, payload],
+
+  [removeContactSuccess]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
+});
+
+const loading = createReducer(false, {
+  [fetchContactRequest]: () => true,
+  [fetchContactSuccess]: () => false,
+  [fetchContactError]: () => false,
+  [addContactRequest]: () => true,
+  [addContactSuccess]: () => false,
+  [addContactError]: () => false,
+  [removeContactRequest]: () => true,
+  [removeContactSuccess]: () => false,
+  [removeContactError]: () => false,
 });
 
 // const items = (state = [], { type, payload }) => {
@@ -25,7 +49,7 @@ const items = createReducer([], {
 // };
 
 const filter = createReducer("", {
-  [actions.changeFilter]: (_, { payload }) => payload,
+  [changeFilter]: (_, { payload }) => payload,
 });
 
 // const filter = (state = "", { type, payload }) => {
@@ -41,4 +65,5 @@ const filter = createReducer("", {
 export default combineReducers({
   items,
   filter,
+  loading,
 });

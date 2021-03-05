@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import style from "./contactForm.module.css";
 import { connect } from "react-redux";
-import phoneBookActions from "../../redux/phoneBookActions";
+import operations from "../../redux/phoneBookOperation";
 import Message from "../Message/Message";
 import swal from "sweetalert";
 import { CSSTransition } from "react-transition-group";
@@ -110,8 +110,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (name, number) =>
-    dispatch(phoneBookActions.addContact(name, number)),
+  onSubmit: (name, number) => dispatch(operations.addContact(name, number)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

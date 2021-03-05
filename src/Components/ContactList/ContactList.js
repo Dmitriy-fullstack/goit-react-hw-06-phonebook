@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import style from "./contactList.module.css";
 import { connect } from "react-redux";
-import actions from "../../redux/phoneBookActions";
+import operations from "../../redux/phoneBookOperation";
 
 function ContactList({ contacts, onContactDelete }) {
   return (
@@ -53,7 +53,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onContactDelete: (id) => {
-    dispatch(actions.removeContact(id));
+    dispatch(operations.removeContact(id));
   },
 });
 

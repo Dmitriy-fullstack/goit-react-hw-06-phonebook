@@ -5,18 +5,12 @@ import ContactList from "./Components/ContactList/ContactList";
 import Filter from "./Components/Filter/Filter";
 import style from "./phonebook.module.css";
 import { connect } from "react-redux";
+import operations from "../src/redux/phoneBookOperation";
 
 class Phonebook extends Component {
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.contacts !== prevState.contacts) {
-  //     localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
-  //   }
-  // }
-  // componentDidMount() {
-  //   const contacts = localStorage.getItem("contacts");
-  //   const parsedContacts = contacts ? JSON.parse(contacts) : [];
-  //   this.setState({ contacts: parsedContacts });
-  // }
+  componentDidMount() {
+    this.props.fetchContacts();
+  }
 
   render() {
     const { contacts } = this.props;
@@ -50,7 +44,7 @@ class Phonebook extends Component {
         >
           <h2>Contacts</h2>
         </CSSTransition>
-
+        {this.props.isLoadingContacts && <h1>...Please wait, loading</h1>}
         <CSSTransition
           in={contacts.length > 0}
           timeout={250}
@@ -74,6 +68,11 @@ class Phonebook extends Component {
 
 const mapStateToProps = (state) => ({
   contacts: state.contacts.items,
+  isLoadingContacts: state.contacts.loading,
 });
 
-export default connect(mapStateToProps, null)(Phonebook);
+const mapDispatchToProps = (dispatch) => ({
+  fetchContacts: () => dispatch(operations.fetchContacts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);
