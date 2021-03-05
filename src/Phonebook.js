@@ -68,7 +68,7 @@ class Phonebook extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  contacts: selectors.getAllContacts(state),
+  contacts: getAllContacts,
   isLoadingContacts: selectors.getLoading(state),
 });
 
