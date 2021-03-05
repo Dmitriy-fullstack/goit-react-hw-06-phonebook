@@ -28,6 +28,6 @@ const getVisibleContacts = createSelector(
 export default {
   getLoading,
   getFilter,
-  getVisibleContacts,
   getAllContacts,
+  getVisibleContacts,
 };
