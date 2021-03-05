@@ -6,6 +6,7 @@ import operations from "../../redux/phoneBookOperation";
 import Message from "../Message/Message";
 import swal from "sweetalert";
 import { CSSTransition } from "react-transition-group";
+import selectors from "../../redux/phoneBookSelectors";
 
 class ContactForm extends Component {
   state = {
@@ -106,7 +107,7 @@ ContactForm.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  contacts: state.contacts.items,
+  contacts: selectors.getAllContacts(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -3,6 +3,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import style from "./contactList.module.css";
 import { connect } from "react-redux";
 import operations from "../../redux/phoneBookOperation";
+import selectors from "../../redux/phoneBookSelectors";
 
 function ContactList({ contacts, onContactDelete }) {
   return (
@@ -41,14 +42,8 @@ ContactList.propTypes = {
   onContactDelete: PropTypes.func,
 };
 
-const getVisibleContacts = (contacts, filter) => {
-  return contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-};
-
 const mapStateToProps = (state) => ({
-  contacts: getVisibleContacts(state.contacts.items, state.contacts.filter),
+  contacts: selectors.getVisibleContacts(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

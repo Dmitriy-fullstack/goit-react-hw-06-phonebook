@@ -4,6 +4,7 @@ import style from "./filter.module.css";
 import shortid from "shortid";
 import { connect } from "react-redux";
 import * as phoneBookActions from "../../redux/phoneBookActions";
+import selectors from "../../redux/phoneBookSelectors";
 
 class Filter extends Component {
   // state = {
@@ -34,7 +35,7 @@ Filter.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  value: state.contacts.filter,
+  value: selectors.getFilter(state),
   items: state.contacts.items,
 });
 

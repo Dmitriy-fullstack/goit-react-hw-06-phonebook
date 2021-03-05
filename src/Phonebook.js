@@ -6,6 +6,7 @@ import Filter from "./Components/Filter/Filter";
 import style from "./phonebook.module.css";
 import { connect } from "react-redux";
 import operations from "../src/redux/phoneBookOperation";
+import selectors from "./redux/phoneBookSelectors";
 
 class Phonebook extends Component {
   componentDidMount() {
@@ -67,8 +68,8 @@ class Phonebook extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  contacts: state.contacts.items,
-  isLoadingContacts: state.contacts.loading,
+  contacts: selectors.getAllContacts(state),
+  isLoadingContacts: selectors.getLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
