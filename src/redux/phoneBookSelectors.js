@@ -14,17 +14,6 @@ const getVisibleContacts = createSelector(
   }
 );
 
-// без мемоизации */
-// const getVisibleContacts = (state) => {
-//   const contacts = getAllContacts(state);
-//   const filter = getFilter(state);
-//   const normalized = filter.toLowerCase();
-
-//   return contacts.filter((contact) =>
-//     contact.name.toLowerCase().includes(normalized)
-//   );
-// };
-
 export default {
   getLoading,
   getFilter,

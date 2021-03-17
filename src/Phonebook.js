@@ -1,79 +1,37 @@
 import React, { Component } from "react";
-import { CSSTransition } from "react-transition-group";
-import ContactForm from "./Components/ContactForm/ContactForm";
-import ContactList from "./Components/ContactList/ContactList";
-import Filter from "./Components/Filter/Filter";
-import style from "./phonebook.module.css";
+import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
-import operations from "../src/redux/phoneBookOperation";
-import selectors from "./redux/phoneBookSelectors";
+import ContactsPage from "./view/Contacts/ContactsPage";
+import HomePage from "./view/Home/HomePage";
+import LoginPage from "./view/Login/LoginPage";
+import RegisterPage from "./view/Register/RegisterPage";
+import AppBar from "./Components/AppBar/AppBar";
+import authOperations from "./redux/auth/authOperation";
+import Container from "./Components/Container/Container";
 
 class Phonebook extends Component {
   componentDidMount() {
-    this.props.fetchContacts();
+    this.props.onGetCurrentUser();
   }
 
   render() {
-    const { contacts } = this.props;
     return (
-      <div className={style.wrapper}>
-        <CSSTransition
-          in={true}
-          appear={true}
-          timeout={500}
-          classNames={style}
-          unmountOnExit
-        >
-          <h1 className={style.title}>Phonebook</h1>
-        </CSSTransition>
-        <div className={style.formSearch}>
-          <ContactForm />
-        </div>
-        <CSSTransition
-          in={contacts.length > 0}
-          timeout={250}
-          classNames={style}
-          unmountOnExit
-        >
-          <Filter />
-        </CSSTransition>
-        <CSSTransition
-          in={contacts.length > 0}
-          timeout={250}
-          classNames={style}
-          unmountOnExit
-        >
-          <h2>Contacts</h2>
-        </CSSTransition>
-        {this.props.isLoadingContacts && <h1>...Please wait, loading</h1>}
-        <CSSTransition
-          in={contacts.length > 0}
-          timeout={250}
-          classNames={style}
-          unmountOnExit
-        >
-          <ContactList />
-        </CSSTransition>
-        <CSSTransition
-          in={contacts.length <= 0}
-          timeout={250}
-          classNames={style}
-          unmountOnExit
-        >
-          <p className={style.warning}>Enter data, please</p>
-        </CSSTransition>
-      </div>
+      <Container>
+        <AppBar />
+
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/contacts" component={ContactsPage} />
+        </Switch>
+      </Container>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  contacts: selectors.getAllContacts(state),
-  isLoadingContacts: selectors.getLoading(state),
-});
-
 const mapDispatchToProps = (dispatch) => ({
-  fetchContacts: () => dispatch(operations.fetchContacts()),
+  onGetCurrentUser: () => dispatch(authOperations.getCurrentUser()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);
+export default connect(null, mapDispatchToProps)(Phonebook);
