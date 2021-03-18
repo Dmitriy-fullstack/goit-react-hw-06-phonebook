@@ -6,16 +6,16 @@ const AuthNav = () => (
     <NavLink
       to="/register"
       exact
-      style={styles.link}
-      activeStyle={styles.activeLink}
+      className={styles.link}
+      activeClassName={styles.activeLink}
     >
       Регистрация
     </NavLink>
     <NavLink
       to="/login"
       exact
-      style={styles.link}
-      activeStyle={styles.activeLink}
+      className={styles.link}
+      activeClassName={styles.activeLink}
     >
       Логин
     </NavLink>
