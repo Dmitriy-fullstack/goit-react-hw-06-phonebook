@@ -9,12 +9,6 @@ import ContactList from "../../Components/ContactList/ContactList";
 import contactsOperations from "../../redux/phoneBookOperation";
 import contactsSelectors from "../../redux/phoneBookSelectors";
 
-// const barStyles = {
-//   display: "flex",
-//   alignItems: "flex-end",
-//   marginBottom: 20,
-// };
-
 class ContactsPage extends Component {
   componentDidMount() {
     this.props.fetchContacts();
@@ -38,16 +32,18 @@ class ContactsPage extends Component {
           <div className={style.formSearch}>
             <ContactForm />
           </div>
+
           <CSSTransition
-            in={contacts.length > 0}
+            in={contacts.items.length > 0}
             timeout={250}
             classNames={style}
             unmountOnExit
           >
             <Filter />
           </CSSTransition>
+
           <CSSTransition
-            in={contacts.length > 0}
+            in={contacts.items.length > 0}
             timeout={250}
             classNames={style}
             unmountOnExit
@@ -56,7 +52,7 @@ class ContactsPage extends Component {
           </CSSTransition>
           {this.props.isLoadingContacts && <h1>...Please wait, loading</h1>}
           <CSSTransition
-            in={contacts.length > 0}
+            in={contacts.items.length > 0}
             timeout={250}
             classNames={style}
             unmountOnExit
@@ -64,7 +60,7 @@ class ContactsPage extends Component {
             <ContactList />
           </CSSTransition>
           <CSSTransition
-            in={contacts.length <= 0}
+            in={contacts.items.length <= 0}
             timeout={250}
             classNames={style}
             unmountOnExit
@@ -79,6 +75,7 @@ class ContactsPage extends Component {
 
 const mapStateToProps = (state) => ({
   isLoadingContacts: contactsSelectors.getLoading(state),
+  contacts: state.contacts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

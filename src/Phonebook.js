@@ -8,6 +8,8 @@ import RegisterPage from "./view/Register/RegisterPage";
 import AppBar from "./Components/AppBar/AppBar";
 import authOperations from "./redux/auth/authOperation";
 import Container from "./Components/Container/Container";
+import PrivateRoute from "./Components/PrivateRoute";
+import PublicRoute from "./Components/PublicRoute";
 
 class Phonebook extends Component {
   componentDidMount() {
@@ -20,10 +22,24 @@ class Phonebook extends Component {
         <AppBar />
 
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/contacts" component={ContactsPage} />
+          <PublicRoute exact path="/" component={HomePage} />
+          <PublicRoute
+            path="/register"
+            restricted
+            redirectTo="/"
+            component={RegisterPage}
+          />
+          <PublicRoute
+            path="/login"
+            restricted
+            redirectTo="/"
+            component={LoginPage}
+          />
+          <PrivateRoute
+            path="/contacts"
+            component={ContactsPage}
+            redirectTo="/login"
+          />
         </Switch>
       </Container>
     );

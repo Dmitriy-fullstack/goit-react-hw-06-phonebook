@@ -5,12 +5,14 @@ import AuthNav from "../authNav/AuthNav";
 import authSelectors from "../../redux/auth/authSelectors";
 import styles from "./appBar.module.css";
 
-const AppBar = (isAuthenticated) => (
-  <header className={styles.header}>
-    <Navigation />
-    {isAuthenticated ? <UserMenu /> : <AuthNav />}
-  </header>
-);
+const AppBar = ({ isAuthenticated }) => {
+  return (
+    <header className={styles.header}>
+      <Navigation />
+      {isAuthenticated ? <UserMenu /> : <AuthNav />}
+    </header>
+  );
+};
 
 const mapStateToProps = (state) => ({
   isAuthenticated: authSelectors.getIsAuthenticated(state),

@@ -63,7 +63,7 @@ const logOut = () => async (dispatch) => {
   dispatch(logoutRequest());
 
   try {
-    const response = await axios("/users/logout");
+    const response = await axios.post("/users/logout");
     token.unset();
     dispatch(logoutSuccess(response.data));
   } catch (error) {
