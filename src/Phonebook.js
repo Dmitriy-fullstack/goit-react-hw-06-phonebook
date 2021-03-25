@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Switch } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
 import ContactsPage from "./view/Contacts/ContactsPage";
 import HomePage from "./view/Home/HomePage";
 import LoginPage from "./view/Login/LoginPage";
@@ -11,43 +11,43 @@ import Container from "./Components/Container/Container";
 import PrivateRoute from "./Components/PrivateRoute";
 import PublicRoute from "./Components/PublicRoute";
 
-class Phonebook extends Component {
-  componentDidMount() {
-    this.props.onGetCurrentUser();
-  }
+export default function Phonebook() {
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <Container>
-        <AppBar />
+  useEffect(() => {
+    dispatch(authOperations.getCurrentUser());
+  }, [dispatch]);
 
-        <Switch>
-          <PublicRoute exact path="/" component={HomePage} />
-          <PublicRoute
-            path="/register"
-            restricted
-            redirectTo="/"
-            component={RegisterPage}
-          />
-          <PublicRoute
-            path="/login"
-            restricted
-            redirectTo="/"
-            component={LoginPage}
-          />
-          <PrivateRoute
-            path="/contacts"
-            component={ContactsPage}
-            redirectTo="/login"
-          />
-        </Switch>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <AppBar />
+
+      <Switch>
+        <PublicRoute exact path="/" component={HomePage} />
+        <PublicRoute
+          path="/register"
+          restricted
+          redirectTo="/"
+          component={RegisterPage}
+        />
+        <PublicRoute
+          path="/login"
+          restricted
+          redirectTo="/"
+          component={LoginPage}
+        />
+        <PrivateRoute
+          path="/contacts"
+          component={ContactsPage}
+          redirectTo="/login"
+        />
+      </Switch>
+    </Container>
+  );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  onGetCurrentUser: () => dispatch(authOperations.getCurrentUser()),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   onGetCurrentUser: () => dispatch(authOperations.getCurrentUser()),
+// });
 
-export default connect(null, mapDispatchToProps)(Phonebook);
+// export default connect(null, mapDispatchToProps)(Phonebook);

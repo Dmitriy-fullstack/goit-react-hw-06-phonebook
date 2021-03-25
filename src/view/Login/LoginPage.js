@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import authOperations from "../../redux/auth/authOperation";
-import { connect } from "react-redux";
 
 const styles = {
   form: {
@@ -13,61 +13,51 @@ const styles = {
   },
 };
 
-class LoginPage extends Component {
-  state = {
-    email: "",
-    password: "",
+export default function LoginPage() {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (evt) => {
+    setEmail(evt.target.value);
+  };
+  const handlePasswordChange = (evt) => {
+    setPassword(evt.target.value);
   };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    dispatch(authOperations.logIn({ email, password }));
+    setEmail("");
+    setPassword("");
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.onLogin(this.state);
-    this.setState({ name: "", email: "", password: "" });
-  };
+  return (
+    <div>
+      <h1>Login Page</h1>
+      <form onSubmit={handleSubmit} autoComplete="off" style={styles.form}>
+        <label style={styles.label}>
+          Email
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleEmailChange}
+          />
+        </label>
 
-  render() {
-    const { email, password } = this.state;
-    return (
-      <div>
-        <h1>Login Page</h1>
-        <form
-          onSubmit={this.handleSubmit}
-          autoComplete="off"
-          style={styles.form}
-        >
-          <label style={styles.label}>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={this.handleChange}
-            />
-          </label>
+        <label style={styles.label}>
+          Password
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </label>
 
-          <label style={styles.label}>
-            Password
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
-          </label>
-
-          <button type="submit">Let`s go!</button>
-        </form>
-      </div>
-    );
-  }
+        <button type="submit">Let`s go!</button>
+      </form>
+    </div>
+  );
 }
-
-const mapDispatchToProps = {
-  onLogin: authOperations.logIn,
-};
-
-export default connect(null, mapDispatchToProps)(LoginPage);

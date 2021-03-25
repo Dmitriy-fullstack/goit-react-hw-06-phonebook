@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Filter from "../../Components/Filter/Filter";
 import style from "../../phonebook.module.css";
 import Container from "../../Components/Container/Container";
@@ -9,77 +9,67 @@ import ContactList from "../../Components/ContactList/ContactList";
 import contactsOperations from "../../redux/phoneBookOperation";
 import contactsSelectors from "../../redux/phoneBookSelectors";
 
-class ContactsPage extends Component {
-  componentDidMount() {
-    this.props.fetchContacts();
-  }
+export default function ContactsPage() {
+  const dispatch = useDispatch();
+  const isLoadingContacts = useSelector(contactsSelectors.getLoading);
+  const contacts = useSelector(contactsSelectors.getAllContacts);
 
-  render() {
-    const { contacts } = this.props;
-    return (
-      <Container>
-        <div className={style.wrapper}>
-          <CSSTransition
-            in={true}
-            appear={true}
-            timeout={500}
-            classNames={style}
-            unmountOnExit
-          >
-            <h1 className={style.title}>Phonebook</h1>
-          </CSSTransition>
+  useEffect(() => {
+    dispatch(contactsOperations.fetchContacts());
+  }, [dispatch]);
 
-          <div className={style.formSearch}>
-            <ContactForm />
-          </div>
+  return (
+    <Container>
+      <div className={style.wrapper}>
+        <CSSTransition
+          in={true}
+          appear={true}
+          timeout={500}
+          classNames={style}
+          unmountOnExit
+        >
+          <h1 className={style.title}>Phonebook</h1>
+        </CSSTransition>
 
-          <CSSTransition
-            in={contacts.items.length > 0}
-            timeout={250}
-            classNames={style}
-            unmountOnExit
-          >
-            <Filter />
-          </CSSTransition>
-
-          <CSSTransition
-            in={contacts.items.length > 0}
-            timeout={250}
-            classNames={style}
-            unmountOnExit
-          >
-            <h2>Contacts</h2>
-          </CSSTransition>
-          {this.props.isLoadingContacts && <h1>...Please wait, loading</h1>}
-          <CSSTransition
-            in={contacts.items.length > 0}
-            timeout={250}
-            classNames={style}
-            unmountOnExit
-          >
-            <ContactList />
-          </CSSTransition>
-          <CSSTransition
-            in={contacts.items.length <= 0}
-            timeout={250}
-            classNames={style}
-            unmountOnExit
-          >
-            <p className={style.warning}>Enter data, please</p>
-          </CSSTransition>
+        <div className={style.formSearch}>
+          <ContactForm />
         </div>
-      </Container>
-    );
-  }
+
+        <CSSTransition
+          in={contacts.length > 0}
+          timeout={250}
+          classNames={style}
+          unmountOnExit
+        >
+          <Filter />
+        </CSSTransition>
+
+        <CSSTransition
+          in={contacts.length > 0}
+          timeout={250}
+          classNames={style}
+          unmountOnExit
+        >
+          <h2>Contacts</h2>
+        </CSSTransition>
+        {isLoadingContacts && <h1>...Please wait, loading</h1>}
+        <CSSTransition
+          in={contacts.length > 0}
+          timeout={250}
+          classNames={style}
+          unmountOnExit
+        >
+          <ContactList />
+        </CSSTransition>
+        <CSSTransition
+          in={contacts.length <= 0}
+          timeout={250}
+          classNames={style}
+          unmountOnExit
+        >
+          <p className={style.warning}>Enter data, please</p>
+        </CSSTransition>
+      </div>
+    </Container>
+  );
 }
-
-const mapStateToProps = (state) => ({
-  isLoadingContacts: contactsSelectors.getLoading(state),
-  contacts: state.contacts,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchContacts: () => dispatch(contactsOperations.fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsPage);
